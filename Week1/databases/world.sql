@@ -8,9 +8,9 @@
 SET standard_conforming_strings = on;
 
 -- Connect to the world database or create it
-DROP DATABASE IF EXISTS world; -- Uncomment if needed
-CREATE DATABASE world;
-\c world;
+-- DROP DATABASE IF EXISTS world; -- Uncomment if needed
+-- CREATE DATABASE world;
+-- \c world; -- psql-only: uncomment and run with psql if you want to create and connect
 
 BEGIN;
 
