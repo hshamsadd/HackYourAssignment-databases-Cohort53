@@ -23,14 +23,24 @@ import { setupDatabase } from './connectDatabase.js';
 }
 
 // Add mentor column
-  async function addMentorColumn() {
+async function addMentorColumn() {
   const client = await setupDatabase();
   try {
     await client.query(`
-      ALTER TABLE authors
-      ADD COLUMN mentor INT REFERENCES authors(author_id);
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1
+          FROM information_schema.columns
+          WHERE table_name = 'authors'
+            AND column_name = 'mentor'
+        ) THEN
+          ALTER TABLE authors
+          ADD COLUMN mentor INT REFERENCES authors(author_id);
+        END IF;
+      END $$;
     `);
-    console.log('Column "mentor" added successfully!');
+    console.log('Column "mentor" added successfully (or already exists).');
   } catch (error) {
     console.error('Error adding mentor column:', error);
   } finally {
